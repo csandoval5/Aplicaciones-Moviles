@@ -1,29 +1,58 @@
 'use client'
 
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import { useState } from 'react'
 import { Form, Input, Button, Typography, notification } from 'antd'
-import type { FormProps } from 'antd'
 
 const { Title, Text } = Typography
 
-type FieldType = {
-  email?: string
-  password?: string
-  confirm?: string
-}
+const schema = yup.object({
+  password: yup
+    .string()
+    .required('La contraseña es obligatoria')
+    .test(
+      'formato-contraseña',
+      'La contraseña debe incluir: al menos 6 caracteres, una letra mayúscula y un número',
+      (value) => {
+        if (!value) return false
+        return value.length >= 6 && /[A-Z]/.test(value) && /\d/.test(value)
+      }
+    ),
+  confirm: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Las contraseñas no coinciden')
+    .required('Confirma tu contraseña'),
+  email: yup
+    .string()
+    .email('Correo no válido')
+    .required('Ingresa tu correo'),
+})
+
+type FormData = yup.InferType<typeof schema>
 
 export default function RegisterPage() {
-  const [cargando, setCargando] = useState(false)
   const [mensaje, setMensaje] = useState<string | null>(null)
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
-    setCargando(true)
-    setMensaje(null)
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+    mode: 'onTouched',
+  })
 
+  const onSubmit = async (values: FormData) => {
+    setMensaje(null)
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
-        body: JSON.stringify({ email: values.email, password: values.password }),
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
         headers: { 'Content-Type': 'application/json' },
       })
 
@@ -54,8 +83,6 @@ export default function RegisterPage() {
         description: 'No se pudo conectar al servidor.',
         placement: 'topRight',
       })
-    } finally {
-      setCargando(false)
     }
   }
 
@@ -88,51 +115,55 @@ export default function RegisterPage() {
           </Text>
         )}
 
-        <Form layout="vertical" name="register" onFinish={onFinish} autoComplete="off">
-          <Form.Item<FieldType>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Form.Item
             label="Correo electrónico"
-            name="email"
-            rules={[
-              { required: true, message: 'Ingresa tu correo' },
-              { type: 'email', message: 'Correo no válido' },
-            ]}
+            validateStatus={errors.email ? 'error' : ''}
+            help={errors.email?.message}
           >
-            <Input placeholder="ejemplo@correo.com" />
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <Input {...field} placeholder="ejemplo@correo.com" />
+              )}
+            />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item
             label="Contraseña"
-            name="password"
-            rules={[{ required: true, message: 'Ingresa una contraseña' }]}
+            validateStatus={errors.password ? 'error' : ''}
+            help={errors.password?.message}
           >
-            <Input.Password placeholder="••••••••" />
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <Input.Password {...field} placeholder="••••••••" />
+              )}
+            />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item
             label="Confirmar contraseña"
-            name="confirm"
-            dependencies={['password']}
-            rules={[
-              { required: true, message: 'Confirma tu contraseña' },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(new Error('Las contraseñas no coinciden'))
-                },
-              }),
-            ]}
+            validateStatus={errors.confirm ? 'error' : ''}
+            help={errors.confirm?.message}
           >
-            <Input.Password placeholder="Repite tu contraseña" />
+            <Controller
+              name="confirm"
+              control={control}
+              render={({ field }) => (
+                <Input.Password {...field} placeholder="Repite tu contraseña" />
+              )}
+            />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block loading={cargando}>
+            <Button type="primary" htmlType="submit" block loading={isSubmitting}>
               Registrarme
             </Button>
           </Form.Item>
-        </Form>
+        </form>
 
         <Text style={{ display: 'block', textAlign: 'center', fontSize: '0.9rem', marginTop: 28 }}>
           ¿Ya tienes cuenta?{' '}
