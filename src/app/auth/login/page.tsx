@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Form, Input, Button, Checkbox, Typography, message } from 'antd'
+import { Form, Input, Button, Checkbox, Typography, notification } from 'antd'
 import type { FormProps } from 'antd'
 
 const { Title, Text } = Typography
@@ -20,23 +20,45 @@ export default function LoginPage() {
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: values.email,
           password: values.password,
         }),
-        headers: { 'Content-Type': 'application/json' },
       })
 
-      const data = await res.json()
+      let mensajeError = 'Credenciales incorrectas'
+      const contentType = res.headers.get('content-type')
 
-      if (res.ok) {
-        message.success('Inicio de sesión exitoso 🎉')
-        window.location.href = '/dashboard'
-      } else {
-        message.error(data.error || 'Error al iniciar sesión')
+      if (contentType && contentType.includes('application/json')) {
+        const data = await res.json()
+        mensajeError = data.error || mensajeError
       }
-    } catch (error) {
-      message.error('Error de conexión')
+
+      if (!res.ok) {
+        notification.error({
+          message: 'Inicio de sesión fallido',
+          description: mensajeError,
+          placement: 'topRight',
+          duration: 4,
+        })
+        return
+      }
+
+      notification.success({
+        message: 'Sesión iniciada',
+        description: 'Redirigiendo al dashboard...',
+        placement: 'topRight',
+        duration: 3,
+      })
+      window.location.href = '/dashboard'
+    } catch {
+      notification.error({
+        message: 'Error de red',
+        description: 'No se pudo contactar con el servidor',
+        placement: 'topRight',
+        duration: 4,
+      })
     } finally {
       setCargando(false)
     }
@@ -112,4 +134,3 @@ export default function LoginPage() {
     </div>
   )
 }
-

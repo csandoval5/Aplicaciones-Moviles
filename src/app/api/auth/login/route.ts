@@ -11,15 +11,18 @@ export async function POST(request: Request) {
       where: { email }
     })
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    const passwordMatch = user && await bcrypt.compare(password, user.password)
+
+    if (!passwordMatch) {
       return NextResponse.json(
         { error: 'Credenciales inválidas' },
         { status: 401 }
       )
     }
 
-    // ✅ Guardamos el email del usuario en la cookie
-    cookies().set('auth', user.email, {
+    // ✅ Guardamos el email del usuario en la cookie — usando await correctamente
+    const cookieStore = await cookies()
+    cookieStore.set('auth', user.email, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 24 * 7, // 1 semana
@@ -32,6 +35,7 @@ export async function POST(request: Request) {
     })
 
   } catch (error) {
+    console.error('Login error:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' },
       { status: 500 }

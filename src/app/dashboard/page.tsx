@@ -4,7 +4,7 @@ import { parse } from 'cookie'
 import DashboardLayout from './DashboardLayout'
 
 export default async function DashboardPage() {
-  const headerList = headers()
+  const headerList = await headers()
   const rawCookies = headerList.get('cookie') || ''
   const { auth: user } = parse(rawCookies)
 
