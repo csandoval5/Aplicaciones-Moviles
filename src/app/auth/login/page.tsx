@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Form, Input, Button, Checkbox, Typography, notification } from 'antd'
 import type { FormProps } from 'antd'
+import Link from 'next/link'
 
 const { Title, Text } = Typography
 
@@ -114,6 +115,12 @@ export default function LoginPage() {
               <Input.Password placeholder="••••••••" />
             </Form.Item>
 
+            <div style={{ textAlign: 'right', marginBottom: 12 }}>
+              <Link href="/auth/forgot-password" style={{ fontSize: '0.875rem', color: '#1677ff' }}>
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
+
             <Form.Item<FieldType> name="remember" valuePropName="checked">
               <Checkbox>Recordarme</Checkbox>
             </Form.Item>
@@ -127,9 +134,9 @@ export default function LoginPage() {
 
           <Text style={{ display: 'block', textAlign: 'center', fontSize: '0.9rem', marginTop: 28 }}>
             ¿No tienes cuenta?{' '}
-            <a href="/register" style={{ color: '#1677ff' }}>
+            <Link href="/register" style={{ color: '#1677ff' }}>
               Regístrate
-            </a>
+            </Link>
           </Text>
         </div>
       </div>
