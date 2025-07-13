@@ -87,90 +87,92 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-50 px-4">
-      <div
-        style={{
-          background: '#fff',
-          padding: 32,
-          borderRadius: 12,
-          width: '100%',
-          maxWidth: 440,
-          boxShadow: '0 3px 18px rgba(0, 0, 0, 0.07)',
-        }}
-      >
-        <Title level={4} style={{ textAlign: 'center', color: '#555', marginBottom: 0 }}>
-          Bienvenido a
-        </Title>
-        <Title level={2} style={{ textAlign: 'center', color: '#1677ff', marginTop: 0, marginBottom: 4 }}>
-          Feed Manager
-        </Title>
+    <div className="relative min-h-screen flex items-center justify-center bg-[url('/images/fondo.jpg')] bg-cover bg-center bg-no-repeat px-4">
+      <div className="absolute inset-0 bg-black bg-opacity-30 z-0" />
+      <div className="relative z-10 w-full max-w-[440px]">
+        <div
+          style={{
+            background: '#fff',
+            padding: 32,
+            borderRadius: 12,
+            width: '100%',
+            boxShadow: '0 3px 18px rgba(0, 0, 0, 0.07)',
+          }}
+        >
+          <Title level={4} style={{ textAlign: 'center', color: '#555', marginBottom: 0 }}>
+            Bienvenido a
+          </Title>
+          <Title level={2} style={{ textAlign: 'center', color: '#1677ff', marginTop: 0, marginBottom: 4 }}>
+            Feed Manager
+          </Title>
 
-        <Text type="secondary" style={{ display: 'block', textAlign: 'center', marginBottom: 32 }}>
-          Ingresá tus datos para registrarte
-        </Text>
-
-        {mensaje && (
-          <Text style={{ display: 'block', textAlign: 'center', color: '#52c41a', marginBottom: 16 }}>
-            {mensaje}
+          <Text type="secondary" style={{ display: 'block', textAlign: 'center', marginBottom: 32 }}>
+            Ingresá tus datos para registrarte
           </Text>
-        )}
 
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Form.Item
-            label="Correo electrónico"
-            validateStatus={errors.email ? 'error' : ''}
-            help={errors.email?.message}
-          >
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <Input {...field} placeholder="ejemplo@correo.com" />
-              )}
-            />
-          </Form.Item>
+          {mensaje && (
+            <Text style={{ display: 'block', textAlign: 'center', color: '#52c41a', marginBottom: 16 }}>
+              {mensaje}
+            </Text>
+          )}
 
-          <Form.Item
-            label="Contraseña"
-            validateStatus={errors.password ? 'error' : ''}
-            help={errors.password?.message}
-          >
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <Input.Password {...field} placeholder="••••••••" />
-              )}
-            />
-          </Form.Item>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <Form.Item
+              label="Correo electrónico"
+              validateStatus={errors.email ? 'error' : ''}
+              help={errors.email?.message}
+            >
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <Input {...field} placeholder="ejemplo@correo.com" />
+                )}
+              />
+            </Form.Item>
 
-          <Form.Item
-            label="Confirmar contraseña"
-            validateStatus={errors.confirm ? 'error' : ''}
-            help={errors.confirm?.message}
-          >
-            <Controller
-              name="confirm"
-              control={control}
-              render={({ field }) => (
-                <Input.Password {...field} placeholder="Repite tu contraseña" />
-              )}
-            />
-          </Form.Item>
+            <Form.Item
+              label="Contraseña"
+              validateStatus={errors.password ? 'error' : ''}
+              help={errors.password?.message}
+            >
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <Input.Password {...field} placeholder="••••••••" />
+                )}
+              />
+            </Form.Item>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block loading={isSubmitting}>
-              Registrarme
-            </Button>
-          </Form.Item>
-        </form>
+            <Form.Item
+              label="Confirmar contraseña"
+              validateStatus={errors.confirm ? 'error' : ''}
+              help={errors.confirm?.message}
+            >
+              <Controller
+                name="confirm"
+                control={control}
+                render={({ field }) => (
+                  <Input.Password {...field} placeholder="Repite tu contraseña" />
+                )}
+              />
+            </Form.Item>
 
-        <Text style={{ display: 'block', textAlign: 'center', fontSize: '0.9rem', marginTop: 28 }}>
-          ¿Ya tienes cuenta?{' '}
-          <a href="/auth/login" style={{ color: '#1677ff' }}>
-            Inicia sesión
-          </a>
-        </Text>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" block loading={isSubmitting}>
+                Registrarme
+              </Button>
+            </Form.Item>
+          </form>
+
+          <Text style={{ display: 'block', textAlign: 'center', fontSize: '0.9rem', marginTop: 28 }}>
+            ¿Ya tienes cuenta?{' '}
+            <a href="/auth/login" style={{ color: '#1677ff' }}>
+              Inicia sesión
+            </a>
+          </Text>
+        </div>
       </div>
     </div>
   )
