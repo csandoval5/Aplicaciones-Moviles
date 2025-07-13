@@ -61,7 +61,7 @@ export default function RegisterPage() {
       if (res.ok) {
         setMensaje('✅ Usuario creado con éxito.')
         notification.success({
-          message: 'Registro exitoso 🎉',
+          title: 'Registro exitoso 🎉',
           description: 'Tu cuenta fue creada correctamente',
           placement: 'topRight',
           duration: 2.5,
@@ -72,14 +72,14 @@ export default function RegisterPage() {
         }, 2500)
       } else {
         notification.error({
-          message: 'Error al registrar',
+          title: 'Error al registrar',
           description: data.error || 'Ocurrió un problema inesperado.',
           placement: 'topRight',
         })
       }
     } catch (err) {
       notification.error({
-        message: 'Error de conexión',
+        title: 'Error de conexión',
         description: 'No se pudo conectar al servidor.',
         placement: 'topRight',
       })
