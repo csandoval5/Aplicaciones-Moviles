@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Layout, Menu, Typography, Avatar } from 'antd'
 import {
   HomeOutlined,
@@ -20,26 +21,26 @@ type DashboardLayoutProps = {
 export default function DashboardLayout({ user, children }: DashboardLayoutProps) {
   const menuItems = [
     {
-      key: '1',
+      key: '/dashboard',
       icon: <HomeOutlined />,
-      label: 'Inicio',
+      label: <Link href="/dashboard">Inicio</Link>,
     },
     {
-      key: '2',
+      key: '/dashboard/profile',
       icon: <UserOutlined />,
-      label: 'Perfil',
+      label: <Link href="/dashboard/profile">Perfil</Link>,
     },
     {
-      key: '3',
+      key: '/dashboard/settings',
       icon: <SettingOutlined />,
-      label: 'Configuración',
+      label: <Link href="/dashboard/settings">Configuración</Link>,
     },
     {
-      key: '4',
+      key: 'logout',
       icon: <LogoutOutlined />,
       label: (
         <form action="/api/auth/logout" method="POST">
-          <button type="submit" style={{ all: 'unset', cursor: 'pointer' }}>
+          <button type="submit" style={{ all: 'unset', cursor: 'pointer', color: 'inherit' }}>
             Cerrar sesión
           </button>
         </form>
@@ -63,7 +64,12 @@ export default function DashboardLayout({ user, children }: DashboardLayoutProps
         >
           FeedManager
         </div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={menuItems} />
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['/dashboard']}
+          items={menuItems}
+        />
       </Sider>
 
       <Layout>
@@ -94,7 +100,7 @@ export default function DashboardLayout({ user, children }: DashboardLayoutProps
             ¡Bienvenido, {user}!
           </Title>
           <Text type="secondary">
-            Este es tu panel principal. Desde aquí podés gestionar usuarios, revisar métricas o
+            Este es tu panel principal. Desde aquí puedes gestionar usuarios, revisar métricas o
             personalizar tu cuenta.
           </Text>
 

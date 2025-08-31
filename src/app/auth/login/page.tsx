@@ -34,11 +34,16 @@ export default function LoginPage() {
       if (contentType && contentType.includes('application/json')) {
         const data = await res.json()
         mensajeError = data.error || mensajeError
+
+        // ✅ Guardar token si existe
+        if (data.token) {
+          localStorage.setItem('token', data.token)
+        }
       }
 
       if (!res.ok) {
         notification.error({
-          title: 'Inicio de sesión fallido',
+          message: 'Inicio de sesión fallido',
           description: mensajeError,
           placement: 'topRight',
           duration: 4,
@@ -47,15 +52,16 @@ export default function LoginPage() {
       }
 
       notification.success({
-        title: 'Sesión iniciada',
+        message: 'Sesión iniciada',
         description: 'Bienvenido',
         placement: 'topRight',
         duration: 3,
       })
+
       window.location.href = '/dashboard'
     } catch {
       notification.error({
-        title: 'Error de red',
+        message: 'Error de red',
         description: 'No se pudo contactar con el servidor',
         placement: 'topRight',
         duration: 4,

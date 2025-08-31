@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 enum Rol {
@@ -17,6 +17,10 @@ model User {
   email      String     @unique
   password   String
   name       String?
+  telefono   String?
+  ciudad     String?
+  edad       Int?
+  cargo      String?
   rol        Rol        @default(USER)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt

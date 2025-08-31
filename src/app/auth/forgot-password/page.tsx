@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
       }
     } catch {
       notification.error({
-        message: 'Error de red',
+        title: 'Error de red',
         description: 'No se pudo contactar con el servidor',
         placement: 'topRight',
         duration: 4,
