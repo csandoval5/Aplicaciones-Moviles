@@ -43,7 +43,7 @@ export default function LoginPage() {
 
       if (!res.ok) {
         notification.error({
-          message: 'Inicio de sesión fallido',
+          title: 'Inicio de sesión fallido',
           description: mensajeError,
           placement: 'topRight',
           duration: 4,
@@ -52,7 +52,7 @@ export default function LoginPage() {
       }
 
       notification.success({
-        message: 'Sesión iniciada',
+        title: 'Sesión iniciada',
         description: 'Bienvenido',
         placement: 'topRight',
         duration: 3,
@@ -61,7 +61,7 @@ export default function LoginPage() {
       window.location.href = '/dashboard'
     } catch {
       notification.error({
-        message: 'Error de red',
+        title: 'Error de red',
         description: 'No se pudo contactar con el servidor',
         placement: 'topRight',
         duration: 4,
