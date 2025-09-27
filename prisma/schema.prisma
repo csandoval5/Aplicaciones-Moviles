@@ -86,3 +86,10 @@ model Movimiento {
   fecha    DateTime
   insumo   Insumo   @relation(fields: [insumoId], references: [id], onDelete: Cascade)
 }
+
+model Configuracion {
+  id        String   @id @default(uuid())
+  clave     String   @unique
+  valor     Json
+  updatedAt DateTime @updatedAt
+}
