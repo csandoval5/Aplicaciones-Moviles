@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">feedmanager</string>
+    <string name="title_activity_main">feedmanager</string>
+    <string name="package_name">com.feedmanager.app</string>
+    <string name="custom_url_scheme">com.feedmanager.app</string>
+</resources>

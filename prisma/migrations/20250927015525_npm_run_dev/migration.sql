@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Lote" ALTER COLUMN "fechaInicio" SET DATA TYPE TIMESTAMP(3);

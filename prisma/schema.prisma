@@ -13,17 +13,17 @@ enum Rol {
 }
 
 model User {
-  id         String     @id @default(uuid())
-  email      String     @unique
-  password   String
-  name       String?
-  telefono   String?
-  ciudad     String?
-  edad       Int?
-  cargo      String?
-  rol        Rol        @default(USER)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id        String     @id @default(uuid())
+  email     String     @unique
+  password  String
+  name      String?
+  telefono  String?
+  ciudad    String?
+  edad      Int?
+  cargo     String?
+  rol       Rol        @default(USER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
   activities Activity[] @relation("UserActivities")
 }
@@ -42,4 +42,47 @@ model ResetToken {
   email     String
   token     String   @unique
   expiresAt DateTime
+}
+
+model Lote {
+  id          String   @id @default(uuid())
+  nombre      String
+  tipo        String
+  cantidad    Int
+  fechaInicio DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  eventos Evento[] // ← Relación inversa
+}
+
+model Evento {
+  id          String   @id @default(uuid())
+  loteId      String
+  tipo        String // Vacuna, Tratamiento, Alimentación
+  descripcion String?
+  fecha       DateTime
+  createdAt   DateTime @default(now())
+
+  lote Lote @relation(fields: [loteId], references: [id])
+}
+
+model Insumo {
+  id        String       @id @default(uuid())
+  nombre    String
+  categoria String
+  unidad    String
+  stock     Float
+  minimo    Float
+  updatedAt DateTime     @updatedAt
+
+  movimientos Movimiento[]
+}
+
+model Movimiento {
+  id       String   @id @default(uuid())
+  insumoId String
+  tipo     String // Entrada o Salida
+  cantidad Float
+  fecha    DateTime
+  insumo   Insumo   @relation(fields: [insumoId], references: [id], onDelete: Cascade)
 }

@@ -1,0 +1,7 @@
+{
+  "name": "feedmanager",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
